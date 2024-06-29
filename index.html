@@ -119,21 +119,14 @@
                 <td>2</td>
                 <td>https://irylek.github.io/m3u/listy/001.m3u</td>
                 <td class="channel-count" id="count2">Ładowanie...</td>
-                <td><a href="listy/001.m3u" download="listy/001.m3u" class="button">Pobierz</a></td>
+                <td><a href="https://irylek.github.io/m3u/listy/001.m3u" download="listy/001.m3u" class="button">Pobierz</a></td>
                 <td><span id="status2" class="status-dot" style="background-color: yellow;"></span></td>
             </tr>
             <tr>
                 <td>3</td>
                 <td>https://irylek.github.io/m3u/listy/002.m3u</td>
                 <td class="channel-count" id="count3">Ładowanie...</td>
-                <td><a href="listy/002.m3u" download="listy/002.m3u" class="button">Pobierz</a></td>
-                <td><span id="status3" class="status-dot" style="background-color: yellow;"></span></td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>http://185.236.229.62:9981/playlist.m3u8</td>
-                <td class="channel-count" id="count3">Ładowanie...</td>
-                <td><a href="http://185.236.229.62:9981/playlist.m3u8" download="https://185.236.229.62:9981/playlist.m3u8" class="button">Pobierz</a></td>
+                <td><a href="https://irylek.github.io/m3u/listy/002.m3u" download="listy/002.m3u" class="button">Pobierz</a></td>
                 <td><span id="status3" class="status-dot" style="background-color: yellow;"></span></td>
             </tr>
         </table>
@@ -186,9 +179,8 @@
         async function updateChannelCountsAndStatus() {
             const urls = [
                 { id: 'count1', url: 'https://iptv-org.github.io/iptv/languages/pol.m3u', statusId: 'status1' },
-                { id: 'count2', url: 'listy/001.m3u', statusId: 'status2' },
-                { id: 'count3', url: 'listy/002.m3u', statusId: 'status3' },
-                { id: 'count4', url: 'http://185.236.229.62:9981/playlist.m3u8', statusId: 'status4' }
+                { id: 'count2', url: 'https://irylek.github.io/m3u/listy/001.m3u', statusId: 'status2' },
+                { id: 'count3', url: 'https://irylek.github.io/m3u/listy/002.m3u', statusId: 'status3' }
             ];
 
             for (const { id, url, statusId } of urls) {
@@ -197,7 +189,7 @@
 
                 const firstStreamUrl = await fetchFirstStreamUrl(url);
                 if (firstStreamUrl) {
-                    const statusColor = await checkStreamStatus(firstStreamUrl);
+                    const statusColor = firstStreamUrl.startsWith('http:') ? 'yellow' : await checkStreamStatus(firstStreamUrl);
                     document.getElementById(statusId).style.backgroundColor = statusColor;
                 } else {
                     document.getElementById(statusId).style.backgroundColor = 'yellow';
