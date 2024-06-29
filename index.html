@@ -79,6 +79,12 @@
             font-weight: bold;
             color: #a725e8;
         }
+        .status-dot {
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
@@ -100,24 +106,35 @@
                 <th>Link</th>
                 <th>Liczba Kanałów</th>
                 <th>Download</th>
+                <th>Status</th>
             </tr>
             <tr>
                 <td>1</td>
                 <td>https://iptv-org.github.io/iptv/languages/pol.m3u</td>
                 <td class="channel-count" id="count1">Ładowanie...</td>
                 <td><a href="https://iptv-org.github.io/iptv/languages/pol.m3u" download="https://iptv-org.github.io/iptv/languages/pol.m3u" class="button">Pobierz</a></td>
+                <td><span id="status1" class="status-dot" style="background-color: yellow;"></span></td>
             </tr>
             <tr>
                 <td>2</td>
-                <td>https://example.com/stream2.m3u</td>
+                <td>https://irylek.github.io/m3u/listy/001.m3u</td>
                 <td class="channel-count" id="count2">Ładowanie...</td>
-                <td><a href="https://example.com/stream2.m3u" download="stream2.m3u" class="button">Pobierz</a></td>
+                <td><a href="https://irylek.github.io/m3u/listy/001.m3u" download="listy/001.m3u" class="button">Pobierz</a></td>
+                <td><span id="status2" class="status-dot" style="background-color: yellow;"></span></td>
             </tr>
             <tr>
                 <td>3</td>
-                <td>https://example.com/stream3.m3u</td>
+                <td>https://irylek.github.io/m3u/listy/002.m3u</td>
                 <td class="channel-count" id="count3">Ładowanie...</td>
-                <td><a href="https://example.com/stream3.m3u" download="stream3.m3u" class="button">Pobierz</a></td>
+                <td><a href="https://irylek.github.io/m3u/listy/002.m3u" download="listy/002.m3u" class="button">Pobierz</a></td>
+                <td><span id="status3" class="status-dot" style="background-color: yellow;"></span></td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>http://185.236.229.62:9981/playlist.m3u8</td>
+                <td class="channel-count" id="count3">Ładowanie...</td>
+                <td><a href="http://185.236.229.62:9981/playlist.m3u8" download="https://185.236.229.62:9981/playlist.m3u8" class="button">Pobierz</a></td>
+                <td><span id="status3" class="status-dot" style="background-color: yellow;"></span></td>
             </tr>
         </table>
     </div>
@@ -136,20 +153,59 @@
             }
         }
 
-        async function updateChannelCounts() {
-            const urls = [
-                { id: 'count1', url: 'https://iptv-org.github.io/iptv/languages/pol.m3u' },
-                { id: 'count2', url: 'https://example.com/stream2.m3u' },
-                { id: 'count3', url: 'https://example.com/stream3.m3u' }
-            ];
-
-            for (const { id, url } of urls) {
-                const count = await fetchChannelCount(url);
-                document.getElementById(id).innerText = count;
+        async function checkStreamStatus(url) {
+            try {
+                const response = await fetch(url);
+                if (response.ok) {
+                    return 'green';
+                } else {
+                    return 'red';
+                }
+            } catch (error) {
+                console.error('Error checking stream status:', error);
+                return 'red';
             }
         }
 
-        updateChannelCounts();
+        async function fetchFirstStreamUrl(url) {
+            try {
+                const response = await fetch(url);
+                const text = await response.text();
+                const lines = text.split('\n').filter(line => line.trim() !== '');
+                if (lines.length > 2) {
+                    return lines[2].trim();
+                } else {
+                    return null;
+                }
+            } catch (error) {
+                console.error('Error fetching first stream URL:', error);
+                return null;
+            }
+        }
+
+        async function updateChannelCountsAndStatus() {
+            const urls = [
+                { id: 'count1', url: 'https://iptv-org.github.io/iptv/languages/pol.m3u', statusId: 'status1' },
+                { id: 'count2', url: 'https://irylek.github.io/m3u/listy/001.m3u', statusId: 'status2' },
+                { id: 'count3', url: 'https://irylek.github.io/m3u/listy/002.m3u', statusId: 'status3' },
+                { id: 'count4', url: 'http://185.236.229.62:9981/playlist.m3u8', statusId: 'status4' }
+            ];
+
+            for (const { id, url, statusId } of urls) {
+                const count = await fetchChannelCount(url);
+                document.getElementById(id).innerText = count;
+
+                const firstStreamUrl = await fetchFirstStreamUrl(url);
+                if (firstStreamUrl) {
+                    const statusColor = await checkStreamStatus(firstStreamUrl);
+                    document.getElementById(statusId).style.backgroundColor = statusColor;
+                } else {
+                    document.getElementById(statusId).style.backgroundColor = 'yellow';
+                }
+            }
+        }
+
+        updateChannelCountsAndStatus();
     </script>
 </body>
 </html>
