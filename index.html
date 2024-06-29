@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>irylek.github.io</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #141414;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #141414;
+            position: fixed;
+            width: calc(100% - 40px);
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #a725e8;
+        }
+        .navbar .menu {
+            display: flex;
+            gap: 20px;
+            text-align: center;
+        }
+        .navbar .menu a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+        }
+        .container {
+            margin-top: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #a725e8;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #a725e8;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #2e2e2e;
+        }
+        tr:nth-child(odd) {
+            background-color: #1e1e1e;
+        }
+        .button {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #a725e8;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .channel-count {
+            font-weight: bold;
+            color: #a725e8;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">irylek.github.io</div>
+        <div class="menu">
+            <a href="https://irylek.github.io/">Strona Główna</a>
+            <a href="https://irylek.github.io/tv/">Telewizja Online</a>
+            <a href="https://irylek.github.io/m3u/">Listy M3U</a>
+            <a href="https://cda.pl/Irylek">Archiwa TV</a>
+            <a href="mailto://irylekontop@gmail.com">Copyright</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <table id="channelTable">
+            <tr>
+                <th>#</th>
+                <th>Link</th>
+                <th>Liczba Kanałów</th>
+                <th>Download</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>https://iptv-org.github.io/iptv/languages/pol.m3u</td>
+                <td class="channel-count" id="count1">Ładowanie...</td>
+                <td><a href="https://iptv-org.github.io/iptv/languages/pol.m3u" download="https://iptv-org.github.io/iptv/languages/pol.m3u" class="button">Pobierz</a></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>https://example.com/stream2.m3u</td>
+                <td class="channel-count" id="count2">Ładowanie...</td>
+                <td><a href="https://example.com/stream2.m3u" download="stream2.m3u" class="button">Pobierz</a></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>https://example.com/stream3.m3u</td>
+                <td class="channel-count" id="count3">Ładowanie...</td>
+                <td><a href="https://example.com/stream3.m3u" download="stream3.m3u" class="button">Pobierz</a></td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        async function fetchChannelCount(url) {
+            try {
+                const response = await fetch(url);
+                const text = await response.text();
+                const lines = text.split('\n').filter(line => line.trim() !== '');
+                const channelCount = (lines.length - 1) / 2;
+                return channelCount;
+            } catch (error) {
+                console.error('Error fetching channel count:', error);
+                return 0;
+            }
+        }
+
+        async function updateChannelCounts() {
+            const urls = [
+                { id: 'count1', url: 'https://iptv-org.github.io/iptv/languages/pol.m3u' },
+                { id: 'count2', url: 'https://example.com/stream2.m3u' },
+                { id: 'count3', url: 'https://example.com/stream3.m3u' }
+            ];
+
+            for (const { id, url } of urls) {
+                const count = await fetchChannelCount(url);
+                document.getElementById(id).innerText = count;
+            }
+        }
+
+        updateChannelCounts();
+    </script>
+</body>
+</html>
