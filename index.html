@@ -113,7 +113,7 @@
                 <td>https://iptv-org.github.io/iptv/languages/pol.m3u</td>
                 <td class="channel-count" id="count1">Ładowanie...</td>
                 <td><a href="https://iptv-org.github.io/iptv/languages/pol.m3u" download="https://iptv-org.github.io/iptv/languages/pol.m3u" class="button">Pobierz</a></td>
-                <td><span id="status1" class="status-dot" style="background-color: yellow;"></span></td>
+                <td><span id="status-working" class="status-dot" style="background-color: yellow;"></span></td>
             </tr>
             <tr>
                 <td>2</td>
@@ -185,7 +185,7 @@
 
         async function updateChannelCountsAndStatus() {
             const urls = [
-                { id: 'count1', url: 'https://iptv-org.github.io/iptv/languages/pol.m3u', statusId: 'status1' },
+                { id: 'status-working', url: 'https://irylek.github.io/mhm.m3u', statusId: 'status1' },
                 { id: 'count2', url: '[irylek.github.io] Lista 001.m3u', statusId: 'status2' },
                 { id: 'count3', url: '[irylek.github.io] Lista 002.m3u', statusId: 'status3' },
                 { id: 'count4', url: 'http://185.236.229.62:9981/playlist.m3u8', statusId: 'status4' }
