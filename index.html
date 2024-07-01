@@ -111,13 +111,19 @@
                 <td>1</td>
                 <td>[irylek.github.io] Lista 001</td>
                 <td class="channel-count" id="count1">Ładowanie...</td>
-                <td><a href="[irylek.github.io] Lista 001.m3u" download="[irylek.github.io] Lista 001.m3u" class="button">Pobierz</a></td>
+                <td><a href="https://irylek.github.io/m3u/[irylek.github.io] Lista 001.m3u" download="https://irylek.github.io/m3u/[irylek.github.io] Lista 001.m3u" class="button">Pobierz</a></td>
             </tr>
             <tr>
                 <td>2</td>
                 <td>[irylek.github.io] Lista 002</td>
                 <td class="channel-count" id="count2">Ładowanie...</td>
-                <td><a href="[irylek.github.io] Lista 002.m3u" download="[irylek.github.io] Lista 002.m3u" class="button">Pobierz</a></td>
+                <td><a href="https://irylek.github.io/m3u/[irylek.github.io] Lista 002.m3u" download="https://irylek.github.io/m3u/[irylek.github.io] Lista 002.m3u" class="button">Pobierz</a></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>[irylek.github.io] Lista 003</td>
+                <td class="channel-count" id="count3">Ładowanie...</td>
+                <td><a href="https://irylek.github.io/m3u/[irylek.github.io] Lista 003.m3u" download="https://irylek.github.io/m3u/[irylek.github.io] Lista 003.m3u" class="button">Pobierz</a></td>
             </tr>
         </table>
     </div>
@@ -138,8 +144,9 @@
 
         async function updateChannelCountsAndStatus() {
             const urls = [
-                { id: 'count1', url: '[irylek.github.io] Lista 001.m3u' },
-                { id: 'count2', url: '[irylek.github.io] Lista 002.m3u' }
+                { id: 'count1', url: 'https://irylek.github.io/m3u/[irylek.github.io] Lista 001.m3u' },
+                { id: 'count2', url: 'https://irylek.github.io/m3u/[irylek.github.io] Lista 002.m3u' },
+                { id: 'count3', url: 'https://irylek.github.io/m3u/[irylek.github.io] Lista 003.m3u' }
             ];
 
             for (const { id, url, statusId } of urls) {
