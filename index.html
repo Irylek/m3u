@@ -79,36 +79,6 @@
             font-weight: bold;
             color: #a725e8;
         }
-        .status-dot {
-            height: 20px;
-            width: 20px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-        .chatbox {
-            position: fixed;
-            top: 80px;
-            right: 0;
-            width: 300px;
-            height: calc(100% - 80px);
-            border-left: 1px solid #a725e8;
-            background-color: #141414;
-            z-index: 999;
-            display: none;
-        }
-        .toggle-button {
-            position: fixed;
-            top: 90px;
-            right: 310px;
-            padding: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #fff;
-            background-color: #a725e8;
-            border: none;
-            cursor: pointer;
-            z-index: 1000;
-        }
     </style>
 </head>
 <body>
@@ -153,51 +123,35 @@
             </tr>
         </table>
     </div>
-
-    <div class="chatbox" id="chatbox">
-        <script id="cid0020000380829953262" data-cfasync="false" async src="//st.chatango.com/js/gz/emb.js" style="width: 100%; height: 100%;">{"handle":"irylekontop","arch":"js","styles":{"a":"CC0000","b":100,"c":"FFFFFF","d":"FFFFFF","k":"CC0000","l":"CC0000","m":"CC0000","n":"FFFFFF","p":"10","q":"CC0000","r":100,"fwtickm":1}}</script>
-    </div>
-
-    <script>
-        function toggleChatbox() {
-            const chatbox = document.getElementById('chatbox');
-            const toggleButton = document.querySelector('.toggle-button');
-            if (chatbox.style.display === 'none') {
-                chatbox.style.display = 'block';
-                toggleButton.textContent = 'Ukryj Chatbox';
-            } else {
-                chatbox.style.display = 'none';
-                toggleButton.textContent = 'Pokaż Chatbox';
-            }
+    
+   <script>
+    async function fetchChannelCount(url) {
+        try {
+            const response = await fetch(url);
+            const text = await response.text();
+            const lines = text.split('\n').filter(line => line.trim() !== '');
+            const channelCount = (lines.length - 3) / 2;
+            return channelCount;
+        } catch (error) {
+            console.error('Error fetching channel count:', error);
+            return 0;
         }
+    }
 
-        async function fetchChannelCount(url) {
-            try {
-                const response = await fetch(url);
-                const text = await response.text();
-                const lines = text.split('\n').filter(line => line.trim() !== '');
-                const channelCount = (lines.length - 3) / 2;
-                return channelCount;
-            } catch (error) {
-                console.error('Error fetching channel count:', error);
-                return 0;
-            }
+    async function updateChannelCounts() {
+        const urls = [
+            { id: 'count1', url: 'https://irylek.github.io/m3u/[irylek.github.io] Lista 001.m3u' },
+            { id: 'count2', url: 'https://irylek.github.io/m3u/[irylek.github.io] Lista 002.m3u' },
+            { id: 'count3', url: 'https://irylek.github.io/m3u/[irylek.github.io] Lista 003.m3u' }
+        ];
+
+        for (const { id, url } of urls) {
+            const count = await fetchChannelCount(url);
+            document.getElementById(id).innerText = count;
         }
+    }
 
-        async function updateChannelCounts() {
-            const urls = [
-                { id: 'count1', url: 'https://irylek.github.io/m3u/[irylek.github.io] Lista 001.m3u' },
-                { id: 'count2', url: 'https://irylek.github.io/m3u/[irylek.github.io] Lista 002.m3u' },
-                { id: 'count3', url: 'https://irylek.github.io/m3u/[irylek.github.io] Lista 003.m3u' }
-            ];
-
-            for (const { id, url } of urls) {
-                const count = await fetchChannelCount(url);
-                document.getElementById(id).innerText = count;
-            }
-        }
-
-        updateChannelCounts();
-    </script>
+    updateChannelCounts();
+</script>
 </body>
 </html>
