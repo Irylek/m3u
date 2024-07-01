@@ -128,32 +128,35 @@
         </table>
     </div>
 
-    <script>
-        async function fetchChannelCount(url) {
-            try {
-                const response = await fetch(url);
-                const text = await response.text();
-                const lines = text.split('\n').filter(line => line.trim() !== '');
-                const channelCount = (lines.length - 3) / 2;
-                return channelCount;
-            } catch (error) {
-                console.error('Error fetching channel count:', error);
-                return 0;
-            }
+<script>
+    async function fetchChannelCount(url) {
+        try {
+            const response = await fetch(url);
+            const text = await response.text();
+            const lines = text.split('\n').filter(line => line.trim() !== '');
+            const channelCount = (lines.length - 3) / 2;
+            return channelCount;
+        } catch (error) {
+            console.error('Error fetching channel count:', error);
+            return 0;
         }
+    }
 
-        async function updateChannelCountsAndStatus() {
-            const urls = [
-                { id: 'count1', url: 'https://irylek.github.io/m3u/[irylek.github.io] Lista 001.m3u' },
-                { id: 'count2', url: 'https://irylek.github.io/m3u/[irylek.github.io] Lista 002.m3u' },
-                { id: 'count3', url: 'https://irylek.github.io/m3u/[irylek.github.io] Lista 003.m3u' }
-            ];
+    async function updateChannelCounts() {
+        const urls = [
+            { id: 'count1', url: 'https://irylek.github.io/m3u/[irylek.github.io] Lista 001.m3u' },
+            { id: 'count2', url: 'https://irylek.github.io/m3u/[irylek.github.io] Lista 002.m3u' },
+            { id: 'count3', url: 'https://irylek.github.io/m3u/[irylek.github.io] Lista 003.m3u' }
+        ];
 
-            for (const { id, url, statusId } of urls) {
-                const count = await fetchChannelCount(url);
-                document.getElementById(id).innerText = count;
-                
-        updateChannelCountsAndStatus();
-    </script>
+        for (const { id, url } of urls) {
+            const count = await fetchChannelCount(url);
+            document.getElementById(id).innerText = count;
+        }
+    }
+
+    updateChannelCounts();
+</script>
+
 </body>
 </html>
