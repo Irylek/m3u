@@ -94,6 +94,20 @@
             border-left: 1px solid #a725e8;
             background-color: #141414;
             z-index: 999;
+            display: none;
+        }
+        .toggle-button {
+            position: fixed;
+            top: 90px;
+            right: 310px;
+            padding: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #a725e8;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
         }
     </style>
 </head>
@@ -108,6 +122,8 @@
             <a href="mailto://irylekontop@gmail.com">Copyright</a>
         </div>
     </div>
+
+    <button class="toggle-button" onclick="toggleChatbox()">Pokaż Chatbox</button>
 
     <div class="container">
         <table id="channelTable">
@@ -138,7 +154,23 @@
         </table>
     </div>
 
+    <div class="chatbox" id="chatbox">
+        <script id="cid0020000380829953262" data-cfasync="false" async src="//st.chatango.com/js/gz/emb.js" style="width: 100%; height: 100%;">{"handle":"irylekontop","arch":"js","styles":{"a":"CC0000","b":100,"c":"FFFFFF","d":"FFFFFF","k":"CC0000","l":"CC0000","m":"CC0000","n":"FFFFFF","p":"10","q":"CC0000","r":100,"fwtickm":1}}</script>
+    </div>
+
     <script>
+        function toggleChatbox() {
+            const chatbox = document.getElementById('chatbox');
+            const toggleButton = document.querySelector('.toggle-button');
+            if (chatbox.style.display === 'none') {
+                chatbox.style.display = 'block';
+                toggleButton.textContent = 'Ukryj Chatbox';
+            } else {
+                chatbox.style.display = 'none';
+                toggleButton.textContent = 'Pokaż Chatbox';
+            }
+        }
+
         async function fetchChannelCount(url) {
             try {
                 const response = await fetch(url);
@@ -167,9 +199,5 @@
 
         updateChannelCounts();
     </script>
-
-    <div class="chatbox">
-        <script id="cid0020000380829953262" data-cfasync="false" async src="//st.chatango.com/js/gz/emb.js" style="width: 100%; height: 100%;">{"handle":"irylekontop","arch":"js","styles":{"a":"CC0000","b":100,"c":"FFFFFF","d":"FFFFFF","k":"CC0000","l":"CC0000","m":"CC0000","n":"FFFFFF","p":"10","q":"CC0000","r":100,"fwtickm":1}}</script>
-    </div>
 </body>
 </html>
